@@ -47,8 +47,10 @@ class DatazillaResultsCollection(object):
 
     def __init__(self, machine_name="", os="", os_version="", platform="",
                  build_name="", version="", revision="", branch="", id="",
-                 test_date=None):
+                 test_date=None, options):
         """
+        - machine_name: host name of the test machine
+        - 
         - id : the build ID for which the dzresults are for; a unique identifier to which these results belong
         """
 
