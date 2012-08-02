@@ -23,12 +23,14 @@ class DatazillaResult(object):
     {"testsuite":{"testname":[values], ...}}
 
     """
-    def __init__(self, results=None):
+    def __init__(self, results=None, options=None):
         self.results = results or {}
+        self.options = options or {}
 
-    def add_testsuite(self, suite_name, results=None):
+    def add_testsuite(self, suite_name, results=None, options=None):
         """Add a testsuite of {"testname":[values],...} to the results."""
         self.results[suite_name] = results or {}
+        self.options[suite_name] = options or {}
 
     def add_test_results(self, suite_name, test_name, values):
         """Add a list of result values to the given testsuite/testname pair."""
@@ -47,7 +49,7 @@ class DatazillaResultsCollection(object):
 
     def __init__(self, machine_name="", os="", os_version="", platform="",
                  build_name="", version="", revision="", branch="", id="",
-                 test_date=None, options=None):
+                 test_date=None):
         """
         - machine_name: host name of the test machine
         - os: name of the os of the test machine ('linux', 'win', 'mac')
@@ -59,7 +61,6 @@ class DatazillaResultsCollection(object):
         - branch: branch of the product under test
         - id: the build ID for which the dzresults are for; a unique identifier to which these results belong
         - test_date: time stamp (seconds since epoch) of the test run, or now if not specified
-        - options: dictionary of options for the test run
         """
 
         self.machine_name = machine_name
@@ -74,7 +75,6 @@ class DatazillaResultsCollection(object):
         if test_date is None:
             test_date = int(time.time())
         self.test_date = test_date
-        self.options = options
         self.results = DatazillaResult()
 
     def add_datazilla_result(self, res):
@@ -108,8 +108,9 @@ class DatazillaResultsCollection(object):
             dataset = deepcopy(perf_json)
             dataset['testrun']['suite'] = suite
             dataset['results'] = deepcopy(data)
-            if self.options:
-                dataset['testrun']['options'] = deepcopy(self.options)
+            options = self.results.options.get(suite)
+            if options:
+                dataset['testrun']['options'] = deepcopy(options)
             datasets.append(dataset)
 
         return datasets
