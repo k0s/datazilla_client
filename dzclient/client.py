@@ -43,7 +43,7 @@ class DatazillaResult(object):
 
     def add_auxiliary_results(self, suite_name, results_name, values):
         """Add auxiliary results for a test suite"""
-        suite = self.results_aux.set_default(suite_name, {})
+        suite = self.results_aux.setdefault(suite_name, {})
         suite.setdefault(results_name, []).extend(values)
 
     def join_results(self, results):
