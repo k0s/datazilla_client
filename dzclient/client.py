@@ -30,7 +30,7 @@ class DatazillaResult(object):
         self.results_aux = results_aux or {}
         self.options = options or {}
 
-    def add_testsuite(self, suite_name, results=None, results_aux, options=None):
+    def add_testsuite(self, suite_name, results=None, results_aux=None, options=None):
         """Add a testsuite of {"testname":[values],...} to the results."""
         self.results[suite_name] = results or {}
         self.results_aux[suite_name] = results_aux or {}
