@@ -128,6 +128,9 @@ class DatazillaResultsCollection(object):
             options = self.results.options.get(suite)
             if options:
                 dataset['testrun']['options'] = deepcopy(options)
+            results_aux = self.results.results_aux.get(suite)
+            if results_aux:
+                dataset['results_aux'] = deepcopy(results_aux)
             datasets.append(dataset)
 
         return datasets
