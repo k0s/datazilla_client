@@ -38,12 +38,12 @@ class DatazillaResultTest(unittest.TestCase):
         """Can merge a full results dictionary into this result."""
         res = DatazillaResult({"suite1": {"test1a": [1]}})
 
-        res.join_results(
+        res.join_results(DatazillaResult(
             {
                 "suite1": {"test1a": [2], "test1b": [3]},
                 "suite2": {"test2a": [4]},
                 }
-            )
+            ))
 
         self.assertEqual(
             res.results,

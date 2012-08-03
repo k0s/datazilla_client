@@ -50,6 +50,7 @@ class DatazillaResult(object):
         for suite_name, options in results.options.items():
             self.options.setdefault(suite_name, {}).update(options)
 
+
 class DatazillaResultsCollection(object):
     """DatazillaResultsCollection manages test information and serialization to JSON"""
 
