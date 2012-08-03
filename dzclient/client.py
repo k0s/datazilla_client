@@ -22,6 +22,8 @@ class DatazillaResult(object):
     Currently, the results are a dictionary of
     {"testsuite":{"testname":[values], ...}}
 
+
+    Each suite may also have an options dictionary
     """
     def __init__(self, results=None, options=None):
         self.results = results or {}
@@ -38,11 +40,15 @@ class DatazillaResult(object):
         suite.setdefault(test_name, []).extend(values)
 
     def join_results(self, results):
-        """Add a dictionary of {"suite":{"name":[values], ...}} to results."""
-        for suite_name, tests in results.items():
+        """Add a dictionary of {"suite":{"name":[values], ...}} to results
+        and update the dictionary of options for each suite
+        """
+        for suite_name, tests in results.results.items():
             suite = self.results.setdefault(suite_name, {})
             for test_name, values in tests.items():
                 suite.setdefault(test_name, []).extend(values)
+        for suite_name, options in results.options.items():
+            self.options.setdefault(suite_name, {}).update(options)
 
 class DatazillaResultsCollection(object):
     """DatazillaResultsCollection manages test information and serialization to JSON"""
@@ -79,7 +85,7 @@ class DatazillaResultsCollection(object):
 
     def add_datazilla_result(self, res):
         """Join a DatazillaResult object to the results."""
-        self.results.join_results(res.results)
+        self.results.join_results(res)
 
     def datasets(self):
         """Return the datasets in JSON serializable form"""
